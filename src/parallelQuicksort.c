@@ -30,7 +30,7 @@ int isSorted(double lyst[], int size);
 
 //for parallel implementation
 void parallelQuicksort(double lyst[], int size, int tlevel);
-void *parallelQuicksortHelper(void *threadarg) __attribute__ ((noreturn));
+void *parallelQuicksortHelper(void *threadarg);
 struct thread_data {
   double *lyst;
   int low;
@@ -278,6 +278,7 @@ void *parallelQuicksortHelper(void *threadarg)
   }
 
   pthread_exit(NULL);
+  return NULL;
 }
 
 //check if the elements of lyst are in non-decreasing order.
