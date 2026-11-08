@@ -16,7 +16,7 @@ for i in 100 1000 10000 100000 1000000 10000000; do
     done
 done
 
-echo "[2/4] Benchmark size"
+echo "[2/4] Benchmark with more size"
 FILE_SIZE="$OUTPUT_DIRECTORY/measurements_size_$TIMESTAMP.txt"
 touch "$FILE_SIZE"
 for i in 100 300 1000 3000 10000 30000 100000 300000 1000000 10000000 30000000; do
@@ -26,7 +26,7 @@ for i in 100 300 1000 3000 10000 30000 100000 300000 1000000 10000000 30000000; 
     done
 done
 
-echo "[3/4] Benchmark Répétitions étendues (30 reps)..."
+echo "[3/4] Benchmark with more reps."
 FILE_REPS="$OUTPUT_DIRECTORY/measurements_reps_$TIMESTAMP.txt"
 touch "$FILE_REPS"
 for i in 100 1000 10000 100000 1000000 10000000 30000000; do
@@ -36,7 +36,7 @@ for i in 100 1000 10000 100000 1000000 10000000 30000000; do
     done
 done
 
-echo "[4/4] Benchmark Ordre Aléatoire (shuf)..."
+echo "[4/4] Benchmark randomized input."
 FILE_RAND="$OUTPUT_DIRECTORY/measurements_random_$TIMESTAMP.txt"
 touch "$FILE_RAND"
 for i in 100 1000 10000 100000 1000000 10000000 30000000; do

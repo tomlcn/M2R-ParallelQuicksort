@@ -11,7 +11,6 @@ read_data <- function(file_path) {
   data_list <- list()
   current_size <- NA
   
-  # Parse the lines to extract size, type, and time
   for (line in lines) {
     if (grepl("^Size:", line)) {
       current_size <- as.numeric(sub("Size:", "", line))
@@ -38,14 +37,13 @@ read_data <- function(file_path) {
 
 df <- do.call(rbind, lapply(files, read_data))
 
-# linear regression analysis for crossover point
+# Linear regression analysis for crossover point
 print("\n Crossover Point Analysis")
 df_wide <- df %>% pivot_wider(names_from = type, values_from = time, values_fn = mean)
 
 if("parallel" %in% names(df_wide) && "sequential" %in% names(df_wide)) {
   df_wide <- df_wide %>% mutate(ratio = parallel / sequential)
   
-  # documentation : https://ggplot2.tidyverse.org/reference/geom_function.html
   p_reg <- ggplot(df_wide, aes(x = size, y = ratio)) +
     geom_point(alpha = 0.4, color = "#1F77B4") +
     geom_smooth(method = "loess", color = "#B22222", fill = "#ffcccc", se = TRUE) +
@@ -59,7 +57,7 @@ if("parallel" %in% names(df_wide) && "sequential" %in% names(df_wide)) {
   ggsave(file.path(directory, "regression_crossover.png"), p_reg, width = 10, height = 6)
 }
 
-# Individual plots for each run
+# Individual plots for each experiment
 print("\n Generating Individual Plots \n")
 
 type_labels <- c(sequential = "sequential (1 thread)",
@@ -82,7 +80,6 @@ for (exp_name in unique(df$experiment)) {
     mutate(lower = mean - ci, upper = mean + ci)
   
   s_sub$type_label <- factor(type_labels[as.character(s_sub$type)], levels = type_labels)
-  exp_name <- as.character(unique(d_sub$experiment)[1])
   
   p_indiv <- ggplot(s_sub, aes(x = size, y = mean, color = type_label, shape = type_label, linetype = type_label)) +
     geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.07, linewidth = 0.6) +
@@ -93,17 +90,15 @@ for (exp_name in unique(df$experiment)) {
     scale_linetype_manual(values = lty) +
     scale_x_log10(labels = scales::label_number(scale_cut = scales::cut_short_scale())) +
     scale_y_log10(labels = scales::label_number(accuracy = 0.00001, drop0trailing = TRUE)) +
-    labs(title = paste0("Benchmark : ", exp_name, " (Run: ", r_id, ")"),
+    labs(title = paste0("Benchmark : ", exp_name),
          x = "Array size (log scale)", y = "Sorting Time (log scale)",
          color = "Algorithm", shape = "Algorithm", linetype = "Algorithm") +
     theme_bw() + theme(legend.position = "bottom")
   
-  ggsave(file.path(directory, paste0("fig_curve_", exp_name, "_", r_id, ".png")), p_indiv, width = 10, height = 5)
+  ggsave(file.path(directory, paste0("fig_curve_", exp_name, ".png")), p_indiv, width = 10, height = 5)
 }
 
 # Anova test
 print("\n Anova Test\n")
 anova_model <- aov(time ~ type * factor(size), data = df)
 print(summary(anova_model))
-
-# RStudio command : setwd("M2/SMPE/M2R-ParallelQuicksort/scripts/"); source("analyze.r")

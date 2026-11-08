@@ -211,3 +211,10 @@ Sequential quicksort took: 26.654616 sec.
 Parallel quicksort took: 3.611463 sec.
 Built-in quicksort took: 6.063534 sec.
 Size: 30000000
+Sequential quicksort took: 27.359412 sec.
+Parallel quicksort took: 3.677656 sec.
+Built-in quicksort took: 6.288861 sec.
+Size: 30000000
+Sequential quicksort took: 27.043006 sec.
+Parallel quicksort took: 3.732910 sec.
+Built-in quicksort took: 6.241477 sec.
